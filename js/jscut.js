@@ -827,3 +827,21 @@ if (typeof options.preloadInBrowser == 'string' && options.preloadInBrowser.leng
     var settings = JSON.parse(localStorage.getItem("settings"));
     fromJson(settings[options.preloadInBrowser]);
 }
+
+function grblWebSaveGcode() {
+
+    var alert = showAlert("Sending gcode to GRBLweb", "alert-info", false);
+    $.ajax({
+        url: "/api/uploadGcode",
+        type: "POST",
+        data: { val: gcodeConversionViewModel.gcode() },
+        dataType: "json",
+    })
+    .done(function (content) {
+        alert.remove();
+    })
+    .fail(function (e) {
+        alert.remove();
+        showAlert("Can't save gcode to GRBLweb", "alert-danger");
+    });
+}
